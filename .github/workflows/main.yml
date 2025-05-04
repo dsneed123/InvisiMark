@@ -25,7 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          
+
       - name: Run tests
         run: pytest
 
@@ -51,7 +51,7 @@ jobs:
           mv deb_build.deb invisimark_1.0_all.deb
 
       - name: Upload DEB package artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: invisimark-deb-package
           path: invisimark_1.0_all.deb
