@@ -89,7 +89,7 @@ def add_watermark(image_path, watermark_text, connected_name):
         os.makedirs(folder_name)
 
     # Save each image with the name provided by the user
-    watermarked_image_path = f"filename_images/{connected_name}_{random.randint(1000, 9999)}.png"
+    watermarked_image_path = os.path.join(folder_name, f"{connected_name}_{random.randint(1000, 9999)}.png")
     img.save(watermarked_image_path)
 
     # Generate a hash for the image (for leak detection)
