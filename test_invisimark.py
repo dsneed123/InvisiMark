@@ -50,7 +50,6 @@ def test_add_watermark_and_metadata():
 
     wm_text = generate_watermark_text("Bob", user_email)
     wm_path, img_hash, modified_pixels = add_watermark(image_path, wm_text, "LeakTest")
-    
     store_image_metadata(user_id, wm_path, wm_text, img_hash, modified_pixels, "LeakTest")
     assert os.path.exists(wm_path)
     shutil.rmtree(tmp_dir)
@@ -59,19 +58,15 @@ def test_scan_image_detects_user():
     user_email = "carol@example.com"
     add_user("Carol", user_email, "321")
     user_id = get_user_by_email(user_email)
-
     tmp_dir = tempfile.mkdtemp()
     image_path = os.path.join(tmp_dir, "test2.png")
     Image.new('RGB', (30, 30), color='green').save(image_path)
-
     wm_text = generate_watermark_text("Carol", user_email)
     wm_path, img_hash, modified_pixels = add_watermark(image_path, wm_text, "LeakCarol")
     store_image_metadata(user_id, wm_path, wm_text, img_hash, modified_pixels, "LeakCarol")
-
     detected = scan_image_for_watermark(wm_path)
     assert detected == "LeakCarol"
     shutil.rmtree(tmp_dir)
-
 def test_invalid_image_scan():
     tmp_path = "nonexistent_file.png"
     try:
@@ -83,7 +78,6 @@ def test_invalid_image_scan():
 def test_image_hash_uniqueness():
     img1 = Image.new('RGB', (10, 10), color='white')
     img2 = Image.new('RGB', (10, 10), color='black')
-
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp1, \
          tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp2:
         img1.save(tmp1.name)
