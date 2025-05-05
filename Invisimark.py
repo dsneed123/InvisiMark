@@ -5,6 +5,7 @@ import random
 import string
 import hashlib
 
+
 # SQLite database setup
 def create_db():
     conn = sqlite3.connect('watermark_db.db')
@@ -27,6 +28,7 @@ def create_db():
     conn.commit()
     conn.close()
 
+
 # Add a user to the database
 def add_user(name, email, phone):
     conn = sqlite3.connect('watermark_db.db')
@@ -37,6 +39,7 @@ def add_user(name, email, phone):
 
     conn.commit()
     conn.close()
+
 
 # Get the user's ID by email
 def get_user_by_email(email):
@@ -52,11 +55,13 @@ def get_user_by_email(email):
         return user[0]
     return None
 
+
 # Generate a random watermark text (for storage and metadata)
 def generate_watermark_text(name, email):
     rand_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
     watermark_text = f"{name}_{email}_{rand_str}"
     return watermark_text
+
 
 # Modify pixels slightly to embed invisible watermark
 def add_watermark(image_path, watermark_text, connected_name):
@@ -97,6 +102,7 @@ def add_watermark(image_path, watermark_text, connected_name):
 
     return watermarked_image_path, image_hash, modified_pixels
 
+
 # Store image metadata in the database
 def store_image_metadata(user_id, image_path, watermark_text, image_hash, modified_pixels, connected_name):
     conn = sqlite3.connect('watermark_db.db')
@@ -115,11 +121,13 @@ def store_image_metadata(user_id, image_path, watermark_text, image_hash, modifi
     conn.commit()
     conn.close()
 
+
 # Generate an image hash for leak detection
 def generate_image_hash(image_path):
     with open(image_path, 'rb') as f:
         image_data = f.read()
         return hashlib.sha256(image_data).hexdigest()
+
 
 # Scan an image to detect a watermark and identify the user
 def scan_image_for_watermark(image_path):
@@ -146,6 +154,7 @@ def scan_image_for_watermark(image_path):
         print("No watermark found.")
         return None
 
+
 # Main Menu Function
 def display_menu():
     print("\n--- Watermarking System ---")
@@ -157,6 +166,7 @@ def display_menu():
     choice = input("Please choose an option (1/2/3/4): ")
     return choice
 
+
 # Function to register a new user
 def register_user():
     name = input("Enter your name: ")
@@ -166,6 +176,7 @@ def register_user():
     # Add the user to the database
     add_user(name, email, phone)
     print(f"User {name} added successfully.")
+
 
 # Function to login an existing user
 def login_user():
@@ -179,6 +190,7 @@ def login_user():
     else:
         print("User not found! Please register first.")
         return None
+
 
 # Function to watermark an image
 def watermark_image(user_id):
@@ -201,6 +213,7 @@ def watermark_image(user_id):
 
         print(f"Watermarked image {i+1} saved as {watermarked_image_path}")
     print("Watermarking complete!")
+
 
 # Main function that drives the application
 def main():
@@ -233,6 +246,7 @@ def main():
 
         else:
             print("Invalid choice. Please select a valid option.")
+
 
 if __name__ == "__main__":
     main()
